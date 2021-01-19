@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [Image.asset('assets/images/calender.png')]),
+            children: [Image.asset('assets/images/calender-cuate.png')]),
       ),
     );
   }
