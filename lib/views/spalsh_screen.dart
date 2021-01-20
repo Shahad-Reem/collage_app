@@ -1,3 +1,4 @@
+import 'package:collage_app/widgets/bottomNavBar.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:collage_app/views/home_Screen.dart';
@@ -31,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _navigateToHome() {
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+        MaterialPageRoute(builder: (BuildContext context) => NavBar()));
   }
 
   void _navigateToLogin() {
@@ -45,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [Image.asset('assets/images/calender-cuate.png')]),
+            children: [Image.asset('assets/images/Calendar-cuate.png')]),
       ),
     );
   }
