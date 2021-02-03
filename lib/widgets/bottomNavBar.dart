@@ -4,7 +4,6 @@ import 'package:collage_app/views/home_Screen.dart';
 import 'package:collage_app/views/profile_screen.dart';
 import 'package:collage_app/views/settings_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 
 class NavBar extends StatefulWidget {
   @override
@@ -24,6 +23,7 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
+        clipBehavior: Clip.none,
         children: [
           bottomIcons == BottomIcons.Home
               ? Container(
