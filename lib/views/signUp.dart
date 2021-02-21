@@ -1,6 +1,10 @@
 import 'package:collage_app/controllers/authentication_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:collage_app/services/AuthResultStatus.dart';
+import '../controllers/authentication_controller.dart';
+import 'package:collage_app/widgets/bottomNavBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -10,9 +14,65 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final firestoreInstance = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
+    void _onPressed() {
+      firestoreInstance.collection("user").add({
+        "name": nameController.text,
+        "email": emailController.text
+      }).then((value) {
+        print(value.get());
+      });
+    }
+
+    _showAlertDialog(errorMsg) {
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(
+                'Login Failed',
+                style: TextStyle(color: Colors.black),
+              ),
+              content: Text(errorMsg),
+            );
+          });
+    }
+
+    createAccount() async {
+      final status = await FirebaseHelper().createAccount(
+          email: emailController.text,
+          password: passwordController.text,
+          name: nameController.text);
+      if (status == AuthResultStatus.successful) {
+        _onPressed();
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) => NavBar()), (r) => false);
+      } else {
+        final errorMsg = AuthExceptionHandler.generateExceptionMessage(status);
+        _showAlertDialog(errorMsg);
+      }
+    }
+
+    final nameField = TextFormField(
+      controller: nameController,
+      validator: (text) {
+        if (text == null || text.isEmpty) {
+          return 'Text is empty';
+        }
+
+        return null;
+      },
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Name",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+
     final emailField = TextFormField(
       controller: emailController,
       validator: (text) {
@@ -22,7 +82,6 @@ class _SignUpState extends State<SignUp> {
 
         return null;
       },
-      obscureText: true,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Email",
@@ -57,9 +116,7 @@ class _SignUpState extends State<SignUp> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          context.read<Authentication>().signUp(
-              email: emailController.text.trim(),
-              password: passwordController.text.trim());
+          createAccount();
         },
         child: Text("Sign Up",
             textAlign: TextAlign.center,
@@ -82,11 +139,8 @@ class _SignUpState extends State<SignUp> {
                 children: <Widget>[
                   SizedBox(
                     height: 155.0,
-                    child: Image.asset(
-                      "assets/logo.png",
-                      fit: BoxFit.contain,
-                    ),
                   ),
+                  nameField,
                   SizedBox(height: 45.0),
                   emailField,
                   SizedBox(height: 25.0),
