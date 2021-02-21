@@ -1,4 +1,7 @@
+import 'package:collage_app/constants/color.dart';
+import 'package:collage_app/controllers/authentication_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -21,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
         return null;
       },
       controller: emailController,
-      obscureText: true,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Email",
@@ -51,11 +53,15 @@ class _LoginScreenState extends State<LoginScreen> {
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
+      color: CustomColors.PrimaryColor,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: () {
+          context.read<Authentication>().signIn(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim());
+        },
         child: Text("Login",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -74,12 +80,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(
-                    height: 155.0,
-                    child: Image.asset(
-                      "assets/logo.png",
-                      fit: BoxFit.contain,
-                    ),
+                  Image.asset(
+                    "assets/images/Calendar-cuate.png",
+                    fit: BoxFit.contain,
                   ),
                   SizedBox(height: 45.0),
                   emailField,
@@ -92,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 15.0,
                   ),
+                  //Text Widget to navigate user
                 ],
               ),
             ),

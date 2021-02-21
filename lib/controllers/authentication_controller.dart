@@ -3,9 +3,9 @@ import 'dart:ffi';
 import 'package:collage_app/views/signUp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class baseAuth {
+class Authentication {
   final FirebaseAuth _firebaseAuth;
-  baseAuth(this._firebaseAuth);
+  Authentication(this._firebaseAuth);
 
   Stream<User> get authStateChanges => _firebaseAuth.idTokenChanges();
 
