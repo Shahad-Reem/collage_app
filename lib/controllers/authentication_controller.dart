@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:collage_app/views/signUp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Authentication {
@@ -21,26 +18,40 @@ class Authentication {
   /// error messages. That way you can throw, return or whatever you prefer with that instead.
   Future<String> signIn({String email, String password}) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
-      return "Signed in";
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: "barry.allen@example.com",
+              password: "SuperSecretPassword!");
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
     }
+    return null;
   }
 
   /// There are a lot of different ways on how you can do exception handling.
   /// This is to make it as easy as possible but a better way would be to
   /// use your own custom class that would take the exception and return better
   /// error messages. That way you can throw, return or whatever you prefer with that instead.
-  Future<String> signUp({String email, String password}) async {
+  signUp({String email, String password}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      return "Signed up";
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: "barry.allen@example.com",
+              password: "SuperSecretPassword!");
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
     }
+    return null;
   }
 
   // Log out

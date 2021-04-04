@@ -1,4 +1,4 @@
-import 'package:collage_app/constants/color.dart';
+import 'package:collage_app/theme/color.dart';
 import 'package:collage_app/views/add_Screen.dart';
 import 'package:collage_app/views/home_Screen.dart';
 import 'package:collage_app/views/profile_screen.dart';

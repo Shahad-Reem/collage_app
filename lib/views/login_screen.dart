@@ -1,4 +1,4 @@
-import 'package:collage_app/constants/color.dart';
+import 'package:collage_app/theme/color.dart';
 import 'package:collage_app/controllers/authentication_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

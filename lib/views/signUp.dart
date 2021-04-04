@@ -1,6 +1,5 @@
 import 'package:collage_app/controllers/authentication_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -11,6 +10,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  Authentication auth;
   @override
   Widget build(BuildContext context) {
     final emailField = TextFormField(
@@ -53,14 +53,9 @@ class _SignUpState extends State<SignUp> {
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
       color: Color(0xff01A0C7),
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
+      child: Container(
+        width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          context.read<Authentication>().signUp(
-              email: emailController.text.trim(),
-              password: passwordController.text.trim());
-        },
         child: Text("Sign Up",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -94,7 +89,10 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(
                     height: 35.0,
                   ),
-                  loginButon,
+                  ElevatedButton(
+                    onPressed: auth.signUp(),
+                    child: Text("Sign up"),
+                  ),
                   SizedBox(
                     height: 15.0,
                   ),
