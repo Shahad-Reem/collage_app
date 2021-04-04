@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collage_app/controllers/authentication_controller.dart';
 import 'package:collage_app/services/AuthResultStatus.dart';
 import 'package:collage_app/widgets/bottomNavBar.dart';
 import 'package:flutter/material.dart';
-import 'fires';
 
 class SignUp extends StatefulWidget {
   @override
