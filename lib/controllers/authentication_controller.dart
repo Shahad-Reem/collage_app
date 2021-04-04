@@ -1,61 +1,63 @@
+import 'package:collage_app/services/AuthResultStatus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Authentication {
-  final FirebaseAuth _firebaseAuth;
-  Authentication(this._firebaseAuth);
+class FirebaseHelper {
+  final _auth = FirebaseAuth.instance;
+  AuthResultStatus _status;
 
-  Stream<User> get authStateChanges => _firebaseAuth.idTokenChanges();
-
-  /// This won't pop routes so you could do something like
-  /// Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
-  /// after you called this method if you want to pop all routes.
-
-  //Sign in fun
-
-  /// There are a lot of different ways on how you can do exception handling.
-  /// This is to make it as easy as possible but a better way would be to
-  /// use your own custom class that would take the exception and return better
-  /// error messages. That way you can throw, return or whatever you prefer with that instead.
-  Future<String> signIn({String email, String password}) async {
+  Future<AuthResultStatus> login({email, password}) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: "barry.allen@example.com",
-              password: "SuperSecretPassword!");
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
-    }
-    return null;
-  }
+      final authResult = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
 
-  /// There are a lot of different ways on how you can do exception handling.
-  /// This is to make it as easy as possible but a better way would be to
-  /// use your own custom class that would take the exception and return better
-  /// error messages. That way you can throw, return or whatever you prefer with that instead.
-  signUp({String email, String password}) async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: "barry.allen@example.com",
-              password: "SuperSecretPassword!");
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+      if (authResult.user != null) {
+        _status = AuthResultStatus.successful;
+      } else {
+        _status = AuthResultStatus.undefined;
       }
     } catch (e) {
-      print(e);
+      print('Exception @createAccount: $e');
+      _status = AuthExceptionHandler.handleException(e);
     }
-    return null;
+
+    return _status;
   }
+
+  Future<AuthResultStatus> createAccount(
+      {String name, String email, String password}) async {
+    try {
+      final authResult = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+
+      if (authResult.user != null) {
+        _status = AuthResultStatus.successful;
+      } else {
+        _status = AuthResultStatus.undefined;
+      }
+    } catch (e) {
+      print('Exception @createAccount: $e');
+      _status = AuthExceptionHandler.handleException(e);
+    }
+    return _status;
+  }
+
+  logout() {
+    _auth.signOut();
+  }
+
+/* Future<String> getCurrentUser() async {
+    User user = await FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      //if a current user exists , then
+      return user.uid;
+    } else {
+      return null;
+    }
+  }
+}*/
 
   // Log out
   Future<void> signOut() async {
-    await _firebaseAuth.signOut();
+    await _auth.signOut();
   }
 }

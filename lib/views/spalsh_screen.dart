@@ -50,4 +50,4 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
-}
+} //this mean it's working

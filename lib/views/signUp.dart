@@ -1,5 +1,8 @@
 import 'package:collage_app/controllers/authentication_controller.dart';
+import 'package:collage_app/services/AuthResultStatus.dart';
+import 'package:collage_app/widgets/bottomNavBar.dart';
 import 'package:flutter/material.dart';
+import 'fires';
 
 class SignUp extends StatefulWidget {
   @override
@@ -9,10 +12,65 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Authentication auth;
+  final firestoreInstance = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
+    void _onPressed() {
+      firestoreInstance.collection("user").add({
+        "name": nameController.text,
+        "email": emailController.text
+      }).then((value) {
+        print(value.get());
+      });
+    }
+
+    _showAlertDialog(errorMsg) {
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(
+                'Login Failed',
+                style: TextStyle(color: Colors.black),
+              ),
+              content: Text(errorMsg),
+            );
+          });
+    }
+
+    createAccount() async {
+      final status = await FirebaseHelper().createAccount(
+          email: emailController.text,
+          password: passwordController.text,
+          name: nameController.text);
+      if (status == AuthResultStatus.successful) {
+        _onPressed();
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) => NavBar()), (r) => false);
+      } else {
+        final errorMsg = AuthExceptionHandler.generateExceptionMessage(status);
+        _showAlertDialog(errorMsg);
+      }
+    }
+
+    final nameField = TextFormField(
+      controller: nameController,
+      validator: (text) {
+        if (text == null || text.isEmpty) {
+          return 'Text is empty';
+        }
+
+        return null;
+      },
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Name",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+
     final emailField = TextFormField(
       controller: emailController,
       validator: (text) {
@@ -22,7 +80,6 @@ class _SignUpState extends State<SignUp> {
 
         return null;
       },
-      obscureText: true,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Email",
@@ -53,9 +110,12 @@ class _SignUpState extends State<SignUp> {
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
       color: Color(0xff01A0C7),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          createAccount();
+        },
         child: Text("Sign Up",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -77,11 +137,8 @@ class _SignUpState extends State<SignUp> {
                 children: <Widget>[
                   SizedBox(
                     height: 155.0,
-                    child: Image.asset(
-                      "assets/logo.png",
-                      fit: BoxFit.contain,
-                    ),
                   ),
+                  nameField,
                   SizedBox(height: 45.0),
                   emailField,
                   SizedBox(height: 25.0),
@@ -89,10 +146,7 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(
                     height: 35.0,
                   ),
-                  ElevatedButton(
-                    onPressed: auth.signUp(),
-                    child: Text("Sign up"),
-                  ),
+                  loginButon,
                   SizedBox(
                     height: 15.0,
                   ),
