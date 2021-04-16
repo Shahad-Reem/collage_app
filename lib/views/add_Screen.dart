@@ -13,6 +13,11 @@ class AddScreen extends StatefulWidget {
 class _AddScreenState extends State<AddScreen> {
   @override
   Widget build(BuildContext context) {
+    TextEditingController titleController = TextEditingController();
+    TextEditingController dateController = TextEditingController();
+    TextEditingController startTimeController = TextEditingController();
+    TextEditingController endTimeController = TextEditingController();
+    TextEditingController descriptionController = TextEditingController();
     double width = MediaQuery.of(context).size.width;
     var downwardIcon = Icon(
       Icons.keyboard_arrow_down,
@@ -46,7 +51,25 @@ class _AddScreenState extends State<AddScreen> {
                       child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      MyTextField(label: 'Title'),
+                      TextFormField(
+                        style: TextStyle(color: Colors.black87),
+                        minLines: 1,
+                        maxLines: 1,
+                        decoration: InputDecoration(
+                            labelText: "title",
+                            labelStyle: TextStyle(color: Colors.black45),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black)),
+                            border: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey))),
+                        controller: titleController,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "all fields are required";
+                          }
+                          return null;
+                        },
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.end,

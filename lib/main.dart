@@ -1,12 +1,9 @@
-import 'package:collage_app/controllers/authentication_controller.dart';
 import 'package:collage_app/views/home_Screen.dart';
 import 'package:collage_app/views/login_screen.dart';
-import 'package:collage_app/views/signUp.dart';
-import 'package:collage_app/widgets/bottomNavBar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:collage_app/views/spalsh_screen.dart';
-import 'package:provider/provider.dart';
 
 import 'views/login_screen.dart';
 
@@ -27,7 +24,12 @@ class MyApp extends StatelessWidget {
 
           // Once complete, show your application
           if (snapshot.connectionState == ConnectionState.done) {
-            return LoginScreen();
+            if (FirebaseAuth.instance.currentUser?.uid == null) {
+              return LoginScreen();
+            } else {
+// logged
+              return HomeScreen();
+            }
           }
 
           // Otherwise, show something whilst waiting for initialization to complete

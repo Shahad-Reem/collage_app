@@ -2,11 +2,9 @@ import 'package:collage_app/theme/color.dart';
 import 'package:collage_app/controllers/authentication_controller.dart';
 import 'package:collage_app/services/AuthResultStatus.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../controllers/authentication_controller.dart';
 import '../widgets/bottomNavBar.dart';
-import 'signUp.dart';
 import 'signUp.dart';
 
 class LoginScreen extends StatefulWidget {

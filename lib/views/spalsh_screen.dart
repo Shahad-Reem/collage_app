@@ -1,9 +1,8 @@
 import 'package:collage_app/widgets/bottomNavBar.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:collage_app/views/home_Screen.dart';
+
 import 'package:collage_app/views/login_screen.dart';
-import 'package:collage_app/views/spalsh_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
