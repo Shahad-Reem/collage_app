@@ -4,6 +4,7 @@ import 'package:collage_app/widgets/back_button.dart';
 import 'package:collage_app/widgets/my_text_field.dart';
 import 'package:collage_app/widgets/top_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class AddScreen extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class _AddScreenState extends State<AddScreen> {
     TextEditingController startTimeController = TextEditingController();
     TextEditingController endTimeController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
+    DateTime now = new DateTime.now();
     double width = MediaQuery.of(context).size.width;
     var downwardIcon = Icon(
       Icons.keyboard_arrow_down,
@@ -70,17 +72,46 @@ class _AddScreenState extends State<AddScreen> {
                           return null;
                         },
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Expanded(
-                            child: MyTextField(
-                              label: 'Date',
-                              icon: downwardIcon,
+                          GestureDetector(
+                            onTap: () {
+                              DatePicker.showDatePicker(context,
+                                  showTitleActions: true,
+                                  minTime: DateTime(2018, 3, 5),
+                                  maxTime:
+                                      DateTime(now.year, now.month, now.day),
+                                  onChanged: (date) {
+                                print('change $date');
+                              }, onConfirm: (date) {
+                                print('confirm $date');
+                              },
+                                  currentTime: DateTime.now(),
+                                  locale: LocaleType.ar);
+                            },
+                            child: Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: CustomColors.kGreen,
+                              ),
+                              child: Icon(
+                                Icons.calendar_today,
+                                size: 20.0,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                          HomeScreen.calendarIcon(),
+                          Text(
+                            "Start time",
+                            style: TextStyle(fontSize: 15),
+                          ),
                         ],
                       )
                     ],
@@ -93,19 +124,91 @@ class _AddScreenState extends State<AddScreen> {
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: <Widget>[
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          GestureDetector(
+                              onTap: () {
+                                DatePicker.showDatePicker(context,
+                                    showTitleActions: true,
+                                    minTime: DateTime(2018, 3, 5),
+                                    maxTime: DateTime(
+                                        now.year + 20,
+                                        now.month + 200,
+                                        now.day + 200), onChanged: (date) {
+                                  print('change $date');
+                                }, onConfirm: (date) {
+                                  print('confirm $date');
+                                },
+                                    currentTime: DateTime.now(),
+                                    locale: LocaleType.ar);
+                              },
+                              child: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: CustomColors.kGreen,
+                                ),
+                                child: Icon(
+                                  Icons.calendar_today,
+                                  size: 20.0,
+                                  color: Colors.white,
+                                ),
+                              )),
+                          Text(
+                            "Start time",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 190),
                       Expanded(
-                          child: MyTextField(
-                        label: 'Start Time',
-                        icon: downwardIcon,
-                      )),
-                      SizedBox(width: 40),
-                      Expanded(
-                        child: MyTextField(
-                          label: 'End Time',
-                          icon: downwardIcon,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Column(
+                              children: <Widget>[
+                                GestureDetector(
+                                    onTap: () {
+                                      DatePicker.showDatePicker(context,
+                                          showTitleActions: true,
+                                          minTime: DateTime(2018, 3, 5),
+                                          maxTime: DateTime(now.year + 20,
+                                              now.month + 200, now.day + 200),
+                                          onChanged: (date) {
+                                        print('change $date');
+                                      }, onConfirm: (date) {
+                                        print('confirm $date');
+                                      },
+                                          currentTime: DateTime.now(),
+                                          locale: LocaleType.ar);
+                                    },
+                                    child: Container(
+                                      width: 50,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: CustomColors.kGreen,
+                                      ),
+                                      child: Icon(
+                                        Icons.calendar_today,
+                                        size: 20.0,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                                Text(
+                                  "End time",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -121,43 +224,6 @@ class _AddScreenState extends State<AddScreen> {
                     alignment: Alignment.topLeft,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Category',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black54,
-                          ),
-                        ),
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.start,
-                          //direction: Axis.vertical,
-                          alignment: WrapAlignment.start,
-                          verticalDirection: VerticalDirection.down,
-                          runSpacing: 0,
-                          //textDirection: TextDirection.rtl,
-                          spacing: 10.0,
-                          children: <Widget>[
-                            Chip(
-                              label: Text("SPORT APP"),
-                              backgroundColor: CustomColors.PrimaryColor,
-                              labelStyle: TextStyle(color: Colors.white),
-                            ),
-                            Chip(
-                              label: Text("MEDICAL APP"),
-                            ),
-                            Chip(
-                              label: Text("RENT APP"),
-                            ),
-                            Chip(
-                              label: Text("NOTES"),
-                            ),
-                            Chip(
-                              label: Text("GAMING PLATFORM APP"),
-                            ),
-                          ],
-                        ),
-                      ],
                     ),
                   )
                 ],
