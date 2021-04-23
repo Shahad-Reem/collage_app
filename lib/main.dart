@@ -1,17 +1,21 @@
+import 'package:collage_app/provider/task_provider.dart';
 import 'package:collage_app/views/home_Screen.dart';
 import 'package:collage_app/views/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
+import 'controllers/task_controllers.dart';
 import 'views/login_screen.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final firestoreService = FireastoreController();
+
     return MaterialApp(
       home: FutureBuilder(
         // Initialize FlutterFire
@@ -27,7 +31,7 @@ class MyApp extends StatelessWidget {
             if (FirebaseAuth.instance.currentUser?.uid == null) {
               return LoginScreen();
             } else {
-// logged
+              // logged
               return HomeScreen();
             }
           }

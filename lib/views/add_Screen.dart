@@ -1,3 +1,5 @@
+import 'package:collage_app/models/task_model.dart';
+import 'package:collage_app/provider/task_provider.dart';
 import 'package:collage_app/theme/color.dart';
 import 'package:collage_app/views/home_Screen.dart';
 import 'package:collage_app/widgets/back_button.dart';
@@ -5,8 +7,13 @@ import 'package:collage_app/widgets/my_text_field.dart';
 import 'package:collage_app/widgets/top_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:collage_app/controllers/task_controllers.dart';
 
 class AddScreen extends StatefulWidget {
+  final Task task;
+
+  const AddScreen({Key key, this.task}) : super(key: key);
   @override
   _AddScreenState createState() => _AddScreenState();
 }
@@ -25,6 +32,19 @@ class _AddScreenState extends State<AddScreen> {
       Icons.keyboard_arrow_down,
       color: Colors.black54,
     );
+
+    final taskProvider = Provider.of(context);
+
+    @override
+    void dispose() {
+      titleController.dispose();
+      dateController.dispose();
+      startTimeController.dispose();
+      endTimeController.dispose();
+      descriptionController.dispose();
+      super.dispose();
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -65,6 +85,9 @@ class _AddScreenState extends State<AddScreen> {
                             border: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.grey))),
                         controller: titleController,
+                        onChanged: (value) {
+                          taskProvider.changeTitle(value);
+                        },
                         validator: (value) {
                           if (value.isEmpty) {
                             return "all fields are required";
@@ -86,8 +109,8 @@ class _AddScreenState extends State<AddScreen> {
                                   minTime: DateTime(2018, 3, 5),
                                   maxTime:
                                       DateTime(now.year, now.month, now.day),
-                                  onChanged: (date) {
-                                print('change $date');
+                                  onChanged: (value) {
+                                taskProvider.changeTitle(value);
                               }, onConfirm: (date) {
                                 print('confirm $date');
                               },
@@ -109,7 +132,7 @@ class _AddScreenState extends State<AddScreen> {
                             ),
                           ),
                           Text(
-                            "Start time",
+                            "Date",
                             style: TextStyle(fontSize: 15),
                           ),
                         ],
@@ -140,8 +163,8 @@ class _AddScreenState extends State<AddScreen> {
                                     maxTime: DateTime(
                                         now.year + 20,
                                         now.month + 200,
-                                        now.day + 200), onChanged: (date) {
-                                  print('change $date');
+                                        now.day + 200), onChanged: (value) {
+                                  taskProvider.changeStartTime(value);
                                 }, onConfirm: (date) {
                                   print('confirm $date');
                                 },
@@ -181,8 +204,8 @@ class _AddScreenState extends State<AddScreen> {
                                           minTime: DateTime(2018, 3, 5),
                                           maxTime: DateTime(now.year + 20,
                                               now.month + 200, now.day + 200),
-                                          onChanged: (date) {
-                                        print('change $date');
+                                          onChanged: (value) {
+                                        taskProvider.changeEndTime(value);
                                       }, onConfirm: (date) {
                                         print('confirm $date');
                                       },
@@ -214,10 +237,21 @@ class _AddScreenState extends State<AddScreen> {
                     ],
                   ),
                   SizedBox(height: 20),
-                  MyTextField(
-                    label: 'Description',
-                    minLines: 3,
-                    maxLines: 3,
+                  TextFormField(
+                    style: TextStyle(color: Colors.black87),
+                    minLines: 1,
+                    maxLines: 1,
+                    controller: descriptionController,
+                    onChanged: (value) {
+                      taskProvider.changeDescription(value);
+                    },
+                    decoration: InputDecoration(
+                        labelText: "Description",
+                        labelStyle: TextStyle(color: Colors.black45),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black)),
+                        border: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey))),
                   ),
                   SizedBox(height: 20),
                   Container(
@@ -229,29 +263,34 @@ class _AddScreenState extends State<AddScreen> {
                 ],
               ),
             )),
-            Container(
-              height: 80,
-              width: width,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      'Create Task',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18),
+            GestureDetector(
+              onTap: () {
+                taskProvider.savetask();
+              },
+              child: Container(
+                height: 80,
+                width: width,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        'Create Task',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18),
+                      ),
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                      width: width - 40,
+                      decoration: BoxDecoration(
+                        color: CustomColors.PrimaryColor,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                     ),
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
-                    width: width - 40,
-                    decoration: BoxDecoration(
-                      color: CustomColors.PrimaryColor,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

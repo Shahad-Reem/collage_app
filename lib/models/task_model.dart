@@ -15,22 +15,22 @@ class Task {
       this.endTime,
       this.description,
       this.id});
-
-  Task.fromMap(Map snapshot, String id)
-      : id = id ?? '',
-        title = snapshot['title'] ?? '',
-        date = snapshot['date'] ?? '',
-        startTime = snapshot['startTime'] ?? '',
-        endTime = snapshot['endTime'] ?? '',
-        description = snapshot['description'] ?? '';
-
-  toJson() {
+  Map toMap() {
     return {
-      "title": title,
-      "date": date,
-      "startTime": startTime,
-      "endTime": endTime,
-      "description": description
+      'id': id,
+      'title': title,
+      'date': date,
+      'startTime': startTime,
+      'endTime': endTime,
+      'description': description
     };
   }
+
+  Task.fromFirestore(Map firestore)
+      : id = firestore['id'],
+        title = firestore['title'],
+        date = firestore['date'],
+        startTime = firestore['startTime'],
+        endTime = firestore['endTime'],
+        description = firestore['description'];
 }
