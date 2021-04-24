@@ -4,8 +4,8 @@ class Task {
   final String id;
   final String title;
   final DateTime date;
-  final DateTimeRange startTime;
-  final DateTimeRange endTime;
+  final DateTime startTime;
+  final DateTime endTime;
   final String description;
 
   Task(
@@ -15,7 +15,8 @@ class Task {
       this.endTime,
       this.description,
       this.id});
-  Map toMap() {
+  // changed the Map type from dynamic => String, dynamic
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'title': title,

@@ -10,43 +10,44 @@ class TaskProvider with ChangeNotifier {
   String _id;
   String _title;
   DateTime _date;
-  DateTimeRange _startTime;
-  DateTimeRange _endTime;
+  DateTime _startTime;
+  DateTime _endTime;
   String _description;
 
   //Getters
   String get title => _title;
   DateTime get date => _date;
-  DateTimeRange get startTime => _startTime;
-  DateTimeRange get endTime => _endTime;
+  DateTime get startTime => _startTime;
+  DateTime get endTime => _endTime;
   String get description => _description;
 
   //Setters
-  _changeTitle(String value) {
+  // apparently, we miss spelled ever setter here
+  changeTitle(String value) {
     _title = value;
     notifyListeners();
   }
 
   //Setters
-  _changeDate(DateTime value) {
+  changeDate(DateTime value) {
     _date = value;
     notifyListeners();
   }
 
   //Setters
-  _changeStartTime(DateTimeRange value) {
+  changeStartTime(DateTime value) {
     _startTime = value;
     notifyListeners();
   }
 
   //Setters
-  _changeEndTime(DateTimeRange value) {
+  changeEndTime(DateTime value) {
     _endTime = value;
     notifyListeners();
   }
 
   //Setters
-  _changeDescription(String value) {
+  changeDescription(String value) {
     _description = value;
     notifyListeners();
   }

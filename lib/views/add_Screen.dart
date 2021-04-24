@@ -10,6 +10,8 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:collage_app/controllers/task_controllers.dart';
 
+//TODO:Check why date is null when send it to firestore
+
 class AddScreen extends StatefulWidget {
   final Task task;
 
@@ -33,7 +35,8 @@ class _AddScreenState extends State<AddScreen> {
       color: Colors.black54,
     );
 
-    final taskProvider = Provider.of(context);
+    final taskProvider = Provider.of<TaskProvider>(context, listen: false);
+    //It gave me an error bc the provider was dynamic. I Changed it to Type(TaskProvider)
 
     @override
     void dispose() {
@@ -110,7 +113,7 @@ class _AddScreenState extends State<AddScreen> {
                                   maxTime:
                                       DateTime(now.year, now.month, now.day),
                                   onChanged: (value) {
-                                taskProvider.changeTitle(value);
+                                taskProvider.changeDate(value);
                               }, onConfirm: (date) {
                                 print('confirm $date');
                               },
@@ -265,7 +268,7 @@ class _AddScreenState extends State<AddScreen> {
             )),
             GestureDetector(
               onTap: () {
-                taskProvider.savetask();
+                taskProvider.saveTask(); //miss spelldd this as well
               },
               child: Container(
                 height: 80,
