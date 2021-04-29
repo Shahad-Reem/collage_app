@@ -27,7 +27,7 @@ class _AppState extends State<App> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => TaskProvider()),
-        //    StreamProvider(create: (context)=> firestoreService.getProducts()),
+        StreamProvider(create: (context) => fireastoreController.getTask()),
       ],
       child: MaterialApp(
         home: checkIfLoggedIn(),

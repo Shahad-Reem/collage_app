@@ -122,7 +122,7 @@ class HomeScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              subheading('My Tasks'),
+                              subheading('My Tasks Today'),
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -145,19 +145,6 @@ class HomeScreen extends StatelessWidget {
                           SizedBox(
                             height: 15.0,
                           ),
-                          TaskColumn(
-                            icon: Icons.blur_circular,
-                            iconBackgroundColor: CustomColors.kDarkYellow,
-                            title: 'In Progress',
-                            subtitle: '1 tasks now. 1 started',
-                          ),
-                          SizedBox(height: 15.0),
-                          TaskColumn(
-                            icon: Icons.check_circle_outline,
-                            iconBackgroundColor: CustomColors.kBlue,
-                            title: 'Done',
-                            subtitle: '18 tasks now. 13 started',
-                          ),
                         ],
                       ),
                     ),
@@ -168,22 +155,21 @@ class HomeScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          subheading('Active Projects'),
+                          subheading('Inspiration quoutes'),
                           SizedBox(height: 5.0),
                           Row(
                             children: <Widget>[
                               ActiveProjectsCard(
                                 cardColor: CustomColors.kGreen,
                                 loadingPercent: 0.25,
-                                title: 'Medical App',
-                                subtitle: '9 hours progress',
+                                title: 'Do your best',
+                                subtitle: 'Do your best',
                               ),
                               SizedBox(width: 20.0),
                               ActiveProjectsCard(
                                 cardColor: CustomColors.kRed,
-                                loadingPercent: 0.6,
-                                title: 'Making History Notes',
-                                subtitle: '20 hours progress',
+                                title: 'Do your best',
+                                subtitle: 'Do your best',
                               ),
                             ],
                           ),
@@ -192,15 +178,15 @@ class HomeScreen extends StatelessWidget {
                               ActiveProjectsCard(
                                 cardColor: CustomColors.kDarkYellow,
                                 loadingPercent: 0.45,
-                                title: 'Sports App',
-                                subtitle: '5 hours progress',
+                                title: 'Do your best',
+                                subtitle: 'Do your best',
                               ),
                               SizedBox(width: 20.0),
                               ActiveProjectsCard(
                                 cardColor: CustomColors.kBlue,
                                 loadingPercent: 0.9,
-                                title: 'Online Flutter Course',
-                                subtitle: '23 hours progress',
+                                title: 'Do your best',
+                                subtitle: 'Do your best',
                               ),
                             ],
                           ),

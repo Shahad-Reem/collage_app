@@ -71,6 +71,7 @@ class TaskProvider with ChangeNotifier {
           endTime: endTime,
           description: description,
           id: uuid.v4());
+      print('Good');
       firestoreService.saveTask(newTask);
     } else {
       //Update
